@@ -1,0 +1,45 @@
+﻿
+@model InventryDB.Models.Product
+
+@{
+    ViewBag.Title = "Edit Product";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Product</title>
+</head>
+<body>
+    <h2>Edit Product</h2>
+
+    @using (Html.BeginForm("Edit", "Product", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ProductID)
+
+        <p>Product ID</p>
+        @Html.DisplayFor(m => m.ProductID)
+
+        <p>Product Name</p>
+        @Html.TextBoxFor(m => m.ProductName)
+        @Html.ValidationMessageFor(m => m.ProductName)
+
+        <p>Quantity</p>
+        @Html.TextBoxFor(m => m.Quantity, new { type = "number" })
+        @Html.ValidationMessageFor(m => m.Quantity)
+
+        <p>Price</p>
+        @Html.TextBoxFor(m => m.Price, new { type = "number", step = "0.01" })
+        @Html.ValidationMessageFor(m => m.Price)
+
+        <br /><br />
+
+        <input type="submit" value="Update Product" />
+    }
+
+    <br />
+    @Html.ActionLink("Back to Product List", "Index")
+</body>
+</html>

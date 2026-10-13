@@ -1,0 +1,112 @@
+﻿
+@model IEnumerable<InventryDB.Models.Product>
+
+@{
+    ViewBag.Title = "Product List";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        .delete-form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Product Inventory</h2>
+
+    <p>
+        @Html.ActionLink("Add New Product", "Create")
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductID</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price</td>
+                        <td>
+                            @Html.ActionLink(
+                                "Edit",
+                                "Edit",
+                                new { id = item.ProductID }
+                            )
+
+                            |
+
+                            @using (Html.BeginForm(
+                                "Delete",
+                                "Product",
+                                new { id = item.ProductID },
+                                FormMethod.Post,
+                                new { @class = "delete-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <input type="submit"
+                                       value="Delete"
+                                       onclick="return confirm('Are you sure you want to delete this product?');" />
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" style="text-align:center;">
+                        No products available.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>
